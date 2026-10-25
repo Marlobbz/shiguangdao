@@ -22,6 +22,9 @@
               <a class="diary-link" href="/diary/<%= d.id %>">
                 <span class="diary-date"><%= d.entry_date %></span>
                 <span class="diary-title"><%= d.title %></span>
+                <% if (isOwner && d.is_private) { %>
+                  <span class="chip chip--private">私人</span>
+                <% } %>
                 <span class="mood mood-<%= MOODS[d.mood] ? d.mood : 'sunny' %>">
                   <%= MOODS[d.mood] ? MOODS[d.mood].label : '晴' %>
                 </span>

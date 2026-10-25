@@ -7,7 +7,9 @@
       <p class="diary-detail__meta">
         <span class="diary-date"><%= dateLabel %></span>
         <span class="mood mood-<%= mood.cls %>"><%= mood.label %></span>
-        <%# 私人标记在 D3 上线会话后、站长查看时显示 %>
+        <% if (user && diary.is_private) { %>
+          <span class="chip chip--private">私人 · 仅你可见</span>
+        <% } %>
       </p>
       <h1 class="diary-detail__title"><%= diary.title %></h1>
     </header>

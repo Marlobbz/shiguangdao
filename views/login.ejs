@@ -1,0 +1,28 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main" class="container auth-page">
+  <form class="auth-card" method="post" action="/login" novalidate>
+    <h1>登录</h1>
+    <p class="auth-sub">只有站长需要登录,访客随意游览。</p>
+
+    <% if (error) { %>
+      <p class="form-alert" role="alert"><%= error %></p>
+    <% } %>
+
+    <input type="hidden" name="next" value="<%= next %>">
+
+    <div class="field">
+      <label for="username">用户名</label>
+      <input id="username" name="username" type="text" value="<%= values.username %>" autocomplete="username" required aria-required="true" autofocus>
+    </div>
+    <div class="field">
+      <label for="password">密码</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required aria-required="true">
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--block">登录</button>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

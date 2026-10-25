@@ -9,8 +9,16 @@
       </span>
     </a>
     <nav class="site-nav" aria-label="主导航">
-      <a href="/" aria-current="page">时间线</a>
+      <a href="/" <%- currentPath === '/' ? 'aria-current="page"' : '' %>>时间线</a>
       <a href="/planner/">灯塔任务</a>
+      <% if (user) { %>
+        <span class="nav-user"><%= user.displayName %></span>
+        <form method="post" action="/logout" class="nav-form">
+          <button type="submit" class="nav-link-btn">退出</button>
+        </form>
+      <% } else { %>
+        <a href="/login" <%- currentPath === '/login' ? 'aria-current="page"' : '' %>>登录</a>
+      <% } %>
     </nav>
   </div>
 </header>

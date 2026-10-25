@@ -154,6 +154,49 @@ code {
   border-bottom-color: var(--accent);
 }
 
+.nav-user {
+  font-size: 13px;
+  color: var(--ink-2);
+  padding: 8px 4px;
+  align-self: center;
+}
+
+.nav-form { display: inline-flex; }
+
+.nav-link-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink-2);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.nav-link-btn:hover { color: var(--ink); background: var(--surface-2); }
+
+/* 私人标记 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  background: var(--surface);
+  white-space: nowrap;
+}
+
+.chip--private {
+  color: var(--danger);
+  border-color: #f0c8c2;
+  background: var(--danger-soft);
+}
+
 /* ---------- 页面结构 ---------- */
 
 .page-head {
@@ -263,6 +306,50 @@ code {
 }
 
 .diary-detail__back { margin-top: 22px; }
+
+/* ---------- 登录 / 创建站长 ---------- */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px 56px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px 26px 28px;
+  height: fit-content;
+}
+
+.auth-card h1 { font-size: 20px; }
+
+.auth-sub {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 6px 0 18px;
+}
+
+.form-alert {
+  background: var(--danger-soft);
+  border: 1px solid #f0c8c2;
+  color: var(--danger);
+  font-size: 13px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+}
+
+.field__hint {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 5px;
+}
+
+.btn--block { width: 100%; margin-top: 6px; }
 
 /* ---------- 空状态与错误页 ---------- */
 

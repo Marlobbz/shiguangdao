@@ -1,0 +1,37 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main" class="container auth-page">
+  <form class="auth-card" method="post" action="/setup" novalidate>
+    <h1>创建站长</h1>
+    <p class="auth-sub">小岛还没有主人。创建之后,这个入口会永久关闭——账号与密码请妥善保管。</p>
+
+    <% for (const key of Object.keys(errors)) { %>
+      <p class="form-alert" role="alert"><%= errors[key] %></p>
+    <% } %>
+
+    <div class="field">
+      <label for="username">用户名 <span class="field__req" aria-hidden="true">*</span></label>
+      <input id="username" name="username" type="text" value="<%= values.username %>" autocomplete="username" required aria-required="true" aria-describedby="hint-username" autofocus>
+      <p class="field__hint" id="hint-username">3–30 位字母、数字或下划线,用于登录。</p>
+    </div>
+    <div class="field">
+      <label for="displayName">展示名 <span class="field__req" aria-hidden="true">*</span></label>
+      <input id="displayName" name="displayName" type="text" value="<%= values.displayName %>" maxlength="20" required aria-required="true">
+      <p class="field__hint">显示在页面上的名字,1–20 字。</p>
+    </div>
+    <div class="field">
+      <label for="password">密码 <span class="field__req" aria-hidden="true">*</span></label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required aria-required="true">
+      <p class="field__hint">8–72 位。</p>
+    </div>
+    <div class="field">
+      <label for="confirm">确认密码 <span class="field__req" aria-hidden="true">*</span></label>
+      <input id="confirm" name="confirm" type="password" autocomplete="new-password" required aria-required="true">
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--block">创建并进入小岛</button>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

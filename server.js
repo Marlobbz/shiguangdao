@@ -6,6 +6,7 @@ const express = require('express');
 
 const { initDb } = require('./db');
 const webRoutes = require('./routes/web');
+const { loadUser } = require('./middleware/auth');
 const { MOODS } = require('./routes/moods');
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -22,13 +23,15 @@ function createApp() {
   app.locals.MOODS = MOODS;
 
   app.use(express.urlencoded({ extended: false }));
-  app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1h' }));
+  /* 静态资源不带 maxAge:浏览器经 ETag 协商缓存,改样式即时生效;公网可再按需加长缓存 */
+  app.use(express.static(path.join(__dirname, 'public')));
 
-  /* 未登录时的默认身份(D3 由会话中间件替换为真实站长信息) */
+  /* 会话与模板全局量 */
   app.use((req, res, next) => {
-    res.locals.user = null;
+    res.locals.currentPath = req.path;
     next();
   });
+  app.use(loadUser);
 
   app.use('/', webRoutes);
 

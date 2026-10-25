@@ -10,6 +10,13 @@ function listPublic(limit = 100) {
     .all(limit);
 }
 
+/* 全部日记(仅站长视角):含私人,排序一致 */
+function listAll(limit = 100) {
+  return getDb()
+    .prepare('SELECT * FROM diaries ORDER BY entry_date DESC, id DESC LIMIT ?')
+    .all(limit);
+}
+
 /* 按 id 取单篇(任意可见性);不存在返回 null。
    可见性由路由层结合当前身份判定——本函数不做权限判断。 */
 function getById(id) {
@@ -33,4 +40,4 @@ function groupByMonth(rows) {
   return groups;
 }
 
-module.exports = { listPublic, getById, groupByMonth };
+module.exports = { listPublic, listAll, getById, groupByMonth };
