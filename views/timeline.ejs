@@ -1,0 +1,37 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main" class="container">
+  <div class="page-head">
+    <h1>时光时间线</h1>
+    <p class="page-sub">站长公开的日记,按发生时间排在下面。</p>
+  </div>
+
+  <% if (groups.length === 0) { %>
+    <div class="empty-state">
+      <p class="empty-title">岛上还没有时光碎片</p>
+      <p class="empty-desc">站长写下第一篇公开日记后,时间线就会在这里出现。</p>
+    </div>
+  <% } else { %>
+    <% for (const g of groups) { %>
+      <section class="month-group" aria-label="<%= g.label %>">
+        <h2 class="month-label"><%= g.label %></h2>
+        <ul class="diary-list">
+          <% for (const d of g.items) { %>
+            <li class="diary-item">
+              <a class="diary-link" href="/diary/<%= d.id %>">
+                <span class="diary-date"><%= d.entry_date %></span>
+                <span class="diary-title"><%= d.title %></span>
+                <span class="mood mood-<%= MOODS[d.mood] ? d.mood : 'sunny' %>">
+                  <%= MOODS[d.mood] ? MOODS[d.mood].label : '晴' %>
+                </span>
+              </a>
+            </li>
+          <% } %>
+        </ul>
+      </section>
+    <% } %>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>

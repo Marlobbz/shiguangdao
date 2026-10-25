@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知序 · 学习任务规划助手</title>
+  <meta name="description" content="面向大学生的学习任务规划工具:记录作业、考试与项目任务,管理截止日期,生成可解释的学习计划。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232f54c4'/%3E%3Cpath d='M7 8h10M7 12h7M7 16h10' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 class="visually-hidden">知序 · 学习任务规划助手</h1>
+
+  <header class="app-header">
+    <div class="container app-header__inner">
+      <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#2f54c4"/><path d="M7 8h10M7 12h7M7 16h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="brand__text">
+          <strong>知序</strong>
+          <span>学习任务规划助手</span>
+        </div>
+      </div>
+      <nav class="app-nav" aria-label="主导航">
+        <button type="button" class="nav-btn is-active" data-view="tasks" aria-current="page">任务</button>
+        <button type="button" class="nav-btn" data-view="plan">学习计划</button>
+        <button type="button" class="nav-btn" data-view="data">数据</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="main">
+    <div id="banner-region"></div>
+
+    <!-- 视图一:任务 -->
+    <section class="view" id="view-tasks" aria-labelledby="tasks-heading">
+      <div class="stats-bar" id="stats-bar" aria-label="任务统计">
+        <div class="stat"><div class="stat__num" id="stat-total">0</div><div class="stat__label">总任务</div></div>
+        <div class="stat"><div class="stat__num" id="stat-done">0</div><div class="stat__label">已完成</div></div>
+        <div class="stat"><div class="stat__num" id="stat-todo">0</div><div class="stat__label">待办</div></div>
+        <div class="stat stat--overdue"><div class="stat__num" id="stat-overdue">0</div><div class="stat__label">已逾期</div></div>
+        <div class="stat stat--rate"><div class="stat__num" id="stat-rate">—</div><div class="stat__label">完成率</div></div>
+      </div>
+
+      <div class="view-head">
+        <div>
+          <h2 id="tasks-heading">我的任务</h2>
+          <p class="view-sub" id="filter-count"></p>
+        </div>
+        <button type="button" class="btn btn--primary" id="btn-add">＋ 新增任务</button>
+      </div>
+
+      <div class="toolbar">
+        <select class="filter-select" id="filter-status" aria-label="按状态筛选">
+          <option value="all">全部状态</option>
+          <option value="todo">待办</option>
+          <option value="done">已完成</option>
+          <option value="overdue">已逾期</option>
+          <option value="today">今日截止</option>
+          <option value="soon">即将截止</option>
+        </select>
+        <select class="filter-select" id="filter-category" aria-label="按分类筛选">
+          <option value="all">全部分类</option>
+          <option value="course">课程</option>
+          <option value="homework">作业</option>
+          <option value="exam">考试</option>
+          <option value="project">项目</option>
+        </select>
+        <input type="search" class="filter-input" id="filter-keyword" aria-label="搜索任务" placeholder="搜索标题或备注…">
+        <span class="toolbar__spacer"></span>
+        <button type="button" class="btn" id="btn-clear-filters" hidden>清除筛选</button>
+      </div>
+
+      <ul class="task-list" id="task-list"></ul>
+
+      <div class="empty-state" id="task-empty" hidden>
+        <div id="empty-no-tasks" hidden>
+          <p class="empty-state__title">还没有任务</p>
+          <p class="empty-state__desc">添加第一个任务,开始管理你的学习安排。</p>
+        </div>
+        <div id="empty-no-results" hidden>
+          <p class="empty-state__title">没有符合筛选条件的任务</p>
+          <p class="empty-state__desc">试试调整状态、分类或关键词。</p>
+          <button type="button" class="btn" id="btn-clear-filters-empty">清除筛选</button>
+        </div>
+        <div class="empty-state__action">
+          <button type="button" class="btn btn--primary" id="btn-add-empty">＋ 新增任务</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 视图二:学习计划 -->
+    <section class="view" id="view-plan" aria-labelledby="plan-heading" hidden>
+      <div class="view-head">
+        <div>
+          <h2 id="plan-heading">学习计划</h2>
+          <p class="view-sub">依据截止日期与优先级,把任务安排进每天的可用时间。</p>
+        </div>
+      </div>
+
+      <form class="plan-settings" id="plan-form">
+        <div class="field">
+          <label for="plan-days">计划周期(天)</label>
+          <input type="number" id="plan-days" min="1" max="60" step="1" value="7" required>
+        </div>
+        <div class="field">
+          <label for="plan-hours">每日可用时间(小时)</label>
+          <input type="number" id="plan-hours" min="0.5" max="16" step="0.5" value="3" required>
+        </div>
+        <button type="submit" class="btn btn--primary">生成计划</button>
+      </form>
+      <p class="plan-hint">计划从今天开始,截止在周期之后的任务不会纳入;时间不够时会明确提示,不会悄悄漏掉任务。</p>
+
+      <div id="plan-output"></div>
+    </section>
+
+    <!-- 视图三:数据管理 -->
+    <section class="view" id="view-data" aria-labelledby="data-heading" hidden>
+      <div class="view-head">
+        <div>
+          <h2 id="data-heading">数据管理</h2>
+          <p class="view-sub">数据保存在此浏览器的 localStorage 中,换设备或清理浏览器前请先备份。</p>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <h3>存储状态</h3>
+        <dl class="data-meta" id="storage-status"></dl>
+      </div>
+
+      <div class="data-card">
+        <h3>备份与恢复</h3>
+        <p>导出全部任务为 JSON 文件;导入时会先校验格式,可以选择合并或覆盖。</p>
+        <div class="data-card__actions">
+          <button type="button" class="btn btn--primary" id="btn-export">导出 JSON 备份</button>
+          <button type="button" class="btn" id="btn-import">导入 JSON…</button>
+          <input type="file" id="import-file" accept=".json,application/json" hidden aria-hidden="true" tabindex="-1">
+        </div>
+      </div>
+
+      <div class="data-card data-card--danger">
+        <h3>危险区</h3>
+        <p>清空本浏览器的全部任务数据,不可恢复。建议先导出备份。</p>
+        <div class="data-card__actions">
+          <button type="button" class="btn btn--danger" id="btn-clear-all">清空全部数据</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 新增 / 编辑任务弹窗 -->
+  <div class="modal" id="modal-task" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+      <div class="modal__head">
+        <h2 id="task-modal-title">新增任务</h2>
+        <button type="button" class="btn-icon" data-close-modal aria-label="关闭弹窗">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <form id="task-form" novalidate>
+        <div class="field">
+          <label for="f-title">标题 <span class="field__req" aria-hidden="true">*</span></label>
+          <input type="text" id="f-title" maxlength="100" required aria-required="true" aria-describedby="err-title" placeholder="例如:高数第 3 章习题">
+          <p class="field__error" id="err-title"></p>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-category">分类 <span class="field__req" aria-hidden="true">*</span></label>
+            <select id="f-category" required aria-required="true">
+              <option value="course">课程</option>
+              <option value="homework" selected>作业</option>
+              <option value="exam">考试</option>
+              <option value="project">项目</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-due">截止日期 <span class="field__req" aria-hidden="true">*</span></label>
+            <input type="date" id="f-due" required aria-required="true" aria-describedby="err-due">
+            <p class="field__error" id="err-due"></p>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-priority">优先级 <span class="field__req" aria-hidden="true">*</span></label>
+            <select id="f-priority" required aria-required="true">
+              <option value="high">高</option>
+              <option value="medium" selected>中</option>
+              <option value="low">低</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-estimate">预计耗时(小时) <span class="field__req" aria-hidden="true">*</span></label>
+            <input type="number" id="f-estimate" min="0.5" max="99" step="0.5" value="1" required aria-required="true" aria-describedby="err-estimate">
+            <p class="field__error" id="err-estimate"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-note">备注(选填)</label>
+          <textarea id="f-note" rows="3" maxlength="500" placeholder="补充说明,如提交方式、章节范围等"></textarea>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn" data-close-modal>取消</button>
+          <button type="submit" class="btn btn--primary">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 通用确认弹窗 -->
+  <div class="modal" id="modal-confirm" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog modal__dialog--sm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+      <div class="modal__head">
+        <h2 id="confirm-title"></h2>
+      </div>
+      <p class="confirm__message" id="confirm-message"></p>
+      <div class="modal__actions">
+        <button type="button" class="btn" id="confirm-cancel">取消</button>
+        <button type="button" class="btn btn--primary" id="confirm-ok">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 导入方式选择弹窗 -->
+  <div class="modal" id="modal-import" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-labelledby="import-title" aria-describedby="import-info">
+      <div class="modal__head">
+        <h2 id="import-title">导入备份</h2>
+        <button type="button" class="btn-icon" data-close-modal aria-label="关闭弹窗">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <p class="confirm__message" id="import-info"></p>
+      <p class="confirm__message"><strong>合并</strong>:按任务 ID 对照,新增缺少的任务、用较新版本更新重名任务,现有其他任务保留。<br><strong>覆盖</strong>:清空现有全部任务后导入,不可恢复。</p>
+      <div class="modal__actions">
+        <button type="button" class="btn" data-close-modal>取消</button>
+        <button type="button" class="btn" id="btn-import-overwrite">覆盖导入…</button>
+        <button type="button" class="btn btn--primary" id="btn-import-merge">合并导入</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+  <noscript>
+    <div class="noscript">知序需要在浏览器中启用 JavaScript 才能运行。</div>
+  </noscript>
+
+  <script src="js/domain.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/planner.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main" class="container error-page">
+  <p class="error-code"><%= typeof code !== 'undefined' ? code : '' %></p>
+  <h1><%= heading %></h1>
+  <p class="error-message"><%= message %></p>
+  <p><a class="btn btn--primary" href="/">回到时间线</a></p>
+</main>
+
+<%- include('partials/footer') %>

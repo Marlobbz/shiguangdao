@@ -1,0 +1,17 @@
+{
+  "name": "shiguangdao",
+  "version": "0.1.0",
+  "description": "拾光岛 —— 站长的个人记忆小岛:时间线日记、贝壳留言与私人日记",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  }
+}
