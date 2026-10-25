@@ -230,6 +230,40 @@ code {
 .mood-starry { color: var(--mood-starry); }
 .mood-foggy  { color: var(--mood-foggy); }
 
+/* ---------- 日记详情 ---------- */
+
+.diary-detail {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 24px 26px 26px;
+  margin: 26px 0 32px;
+}
+
+.diary-detail__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.diary-detail__title {
+  font-size: 22px;
+  line-height: 1.35;
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.diary-detail__content {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  white-space: pre-line;      /* 纯文本日记:保留换行,EJS 已转义 */
+  overflow-wrap: anywhere;
+}
+
+.diary-detail__back { margin-top: 22px; }
+
 /* ---------- 空状态与错误页 ---------- */
 
 .empty-state {

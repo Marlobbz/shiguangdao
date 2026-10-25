@@ -1,0 +1,23 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main" class="container">
+  <article class="diary-detail">
+    <header class="diary-detail__head">
+      <p class="diary-detail__meta">
+        <span class="diary-date"><%= dateLabel %></span>
+        <span class="mood mood-<%= mood.cls %>"><%= mood.label %></span>
+        <%# 私人标记在 D3 上线会话后、站长查看时显示 %>
+      </p>
+      <h1 class="diary-detail__title"><%= diary.title %></h1>
+    </header>
+
+    <div class="diary-detail__content"><%= diary.content %></div>
+
+    <p class="diary-detail__back">
+      <a class="btn" href="/">← 回到时间线</a>
+    </p>
+  </article>
+</main>
+
+<%- include('partials/footer') %>

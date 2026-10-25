@@ -4,7 +4,7 @@
 
 首届"智核杯"AI 创作大赛 · 赛道二(AI 网站创作)作品。
 
-> 进度:v0.1(D1 项目搭建完成)。功能按七天计划逐步交付,见 `docs/phase1-design.md` §6。
+> 进度:v0.2(D2 时间线 + 详情页完成)。功能按七天计划逐步交付,见 `docs/phase1-design.md` §6。
 
 ## 运行(本地)
 
@@ -17,16 +17,27 @@ npm start       # http://localhost:3000
 
 无构建步骤。数据保存在本机 `data/shiguangdao.db`(SQLite,自动创建,已在 .gitignore 中排除)。
 
+```bash
+npm test        # 服务层单元测试(临时库,不碰开发数据)
+npm run seed    # 写入演示日记(会先清空,仅供开发与演示)
+npm run reset   # 清空日记与留言(保留站长账号)
+```
+
 ## 目录结构
 
 ```
 shiguangdao/
 ├── server.js            服务入口(Express)
-├── routes/web.js        页面路由(D1:时间线)
+├── routes/web.js        页面路由(时间线 / 日记详情)
 ├── routes/moods.js      心情枚举(事实来源)
+├── services/diary.js    日记数据服务(列表/详情/分组)
+├── lib/date.js          服务端日期工具
 ├── db/schema.sql        SQLite 表结构(幂等建表)
-├── db/index.js          连接与初始化
-├── views/               EJS 模板(partials + timeline + error)
+├── db/index.js          连接与初始化(路径可用 SGD_DB 覆盖)
+├── scripts/seed.js      演示数据(相对今天生成)
+├── scripts/reset.js     清空演示数据
+├── tests/               单元测试(npm test)
+├── views/               EJS 模板(partials + timeline + diary + error)
 ├── public/
 │   ├── css/base.css     岛屿主题基础样式
 │   └── planner/         「灯塔任务」模块 = 知序 v1.0 原样复用(含独立说明)
@@ -39,7 +50,8 @@ shiguangdao/
 
 ## 页面
 
-- `/` 时光时间线:公开日记按发生日期倒序、按月分组(当前为空状态,日记功能在 D2-D4 交付)
+- `/` 时光时间线:公开日记按发生日期倒序、按月分组;私人日记在 SQL 层排除
+- `/diary/:id` 日记详情:公开可看;私人对访客返回 404(不泄露存在性)
 - `/planner/` 灯塔任务:完整的学习任务规划工具(独立 localStorage 存储)
 
 ## 部署到公网(后续配置)

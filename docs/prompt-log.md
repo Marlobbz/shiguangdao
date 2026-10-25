@@ -16,3 +16,10 @@
 - **我的 Prompt**:"复用知序,仅单站长,先本地方案,公网服务器我后会配置,版本管理使用git,同时上传github"
 - **AI 返回结果**:确认决策并回写设计文档;执行 D1 项目搭建 —— `package.json`(express/ejs/better-sqlite3 三依赖,无构建)、`.gitignore`、`db/schema.sql` + `db/index.js`(WAL + 幂等建表)、`server.js`(Express 5 入口 + 404/500)、`routes/web.js`(时间线,真实 SQL 查询 + 按月分组)、EJS 模板(partials/timeline/error)、`public/css/base.css`(岛屿主题:暖沙纸面 + 深海蓝绿单主色,设计决策注释在文件头)、知序模块原样复用至 `public/planner/` 并挂载 `/planner/`、README、本项目双日志 + 知序模块档案归档 `docs/zhixu-module/`;验收通过后 git init 提交并创建 GitHub 仓库推送。
 - **我做的人工改动**:(由参赛学生填写)
+
+## 条目 3
+
+- **使用工具**:ZCode(GLM 模型);npm test;curl;ZCode 内置浏览器(截图)
+- **我的 Prompt**:"继续"(执行 D2:时间线 + 详情页)
+- **AI 返回结果**:见 `docs/dev-log.md` 第 2 轮 —— 日记数据服务层(`services/diary.js`)、详情路由与视图(私人日记对访客 404 且不泄露存在性)、`scripts/seed.js` / `reset.js`、7 项服务层单元测试(全部通过)、curl 与截图验收。
+- **我做的人工改动**:(由参赛学生填写)
